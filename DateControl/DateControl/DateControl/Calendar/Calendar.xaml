@@ -1,0 +1,196 @@
+﻿<Grid xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DateControl.Calendar.Calendar"
+      xmlns:local="clr-namespace:DateControl.Calendar">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="5*" />
+        <RowDefinition Height="24*" />
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="9*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0" Source=""></Image>
+            <Label Grid.Column="1" Text="{Binding Mounth.Name}" />
+            <Image Grid.Column="2" Source=""></Image>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0" Text="Пн" />
+            <Label Grid.Column="1" Text="Вт" />
+            <Label Grid.Column="2" Text="Ср" />
+            <Label Grid.Column="3" Text="Чт" />
+            <Label Grid.Column="4" Text="Пт" />
+            <Label Grid.Column="5" Text="Сб" />
+            <Label Grid.Column="6" Text="Вс" />
+        </Grid>
+    </Grid>
+
+    <Grid Grid.Row="1" BindingContext="Mounth">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <local:GridView ItemsSource="{Binding Mounth.Days}"></local:GridView>
+        <!--<Grid Grid.Row="0" Grid.Column="0">
+            <Label Text="{Binding Day_0_0}"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Label Text="{Binding Day_1_0}"/>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="0">
+            <Label Text="{Binding Day_2_0}"/>
+        </Grid>
+        <Grid Grid.Row="3" Grid.Column="0">
+            <Label Text="{Binding Day_3_0}"/>
+        </Grid>
+        <Grid Grid.Row="4" Grid.Column="0">
+            <Label Text="{Binding Day_4_0}"/>
+        </Grid>
+        <Grid Grid.Row="5" Grid.Column="0">
+            <Label Text="{Binding Day_5_0}"/>
+        </Grid>
+        <Grid Grid.Row="6" Grid.Column="0">
+            <Label Text="{Binding Day_6_0}"/>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Label Text="{Binding Day_0_1}"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Label Text="{Binding Day_1_1}"/>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Label Text="{Binding Day_2_1}"/>
+        </Grid>
+        <Grid Grid.Row="3" Grid.Column="1">
+            <Label Text="{Binding Day_3_1}"/>
+        </Grid>
+        <Grid Grid.Row="4" Grid.Column="1">
+            <Label Text="{Binding Day_4_1}"/>
+        </Grid>
+        <Grid Grid.Row="5" Grid.Column="1">
+            <Label Text="{Binding Day_5_1}"/>
+        </Grid>
+        <Grid Grid.Row="6" Grid.Column="1">
+            <Label Text="{Binding Day_6_1}"/>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="2">
+            <Label Text="{Binding Day_0_2}"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="2">
+            <Label Text="{Binding Day_1_2}"/>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="2">
+            <Label Text="{Binding Day_2_2}"/>
+        </Grid>
+        <Grid Grid.Row="3" Grid.Column="2">
+            <Label Text="{Binding Day_3_2}"/>
+        </Grid>
+        <Grid Grid.Row="4" Grid.Column="2">
+            <Label Text="{Binding Day_4_2}"/>
+        </Grid>
+        <Grid Grid.Row="5" Grid.Column="2">
+            <Label Text="{Binding Day_5_2}"/>
+        </Grid>
+        <Grid Grid.Row="6" Grid.Column="2">
+            <Label Text="{Binding Day_6_2}"/>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="3">
+            <Label Text="{Binding Day_0_3}"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="3">
+            <Label Text="{Binding Day_1_3}"/>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="3">
+            <Label Text="{Binding Day_2_3}"/>
+        </Grid>
+        <Grid Grid.Row="3" Grid.Column="3">
+            <Label Text="{Binding Day_3_3}"/>
+        </Grid>
+        <Grid Grid.Row="4" Grid.Column="3">
+            <Label Text="{Binding Day_4_3}"/>
+        </Grid>
+        <Grid Grid.Row="5" Grid.Column="3">
+            <Label Text="{Binding Day_5_3}"/>
+        </Grid>
+        <Grid Grid.Row="6" Grid.Column="3">
+            <Label Text="{Binding Day_6_3}"/>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="4">
+            <Label Text="{Binding Day_0_4}"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="4">
+            <Label Text="{Binding Day_1_4}"/>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="4">
+            <Label Text="{Binding Day_2_4}"/>
+        </Grid>
+        <Grid Grid.Row="3" Grid.Column="4">
+            <Label Text="{Binding Day_3_4}"/>
+        </Grid>
+        <Grid Grid.Row="4" Grid.Column="4">
+            <Label Text="{Binding Day_4_4}"/>
+        </Grid>
+        <Grid Grid.Row="5" Grid.Column="4">
+            <Label Text="{Binding Day_5_4}"/>
+        </Grid>
+        <Grid Grid.Row="6" Grid.Column="4">
+            <Label Text="{Binding Day_6_4}"/>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="5">
+            <Label Text="{Binding Day_0_5}"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="5">
+            <Label Text="{Binding Day_1_5}"/>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="5">
+            <Label Text="{Binding Day_2_5}"/>
+        </Grid>
+        <Grid Grid.Row="3" Grid.Column="5">
+            <Label Text="{Binding Day_3_5}"/>
+        </Grid>
+        <Grid Grid.Row="4" Grid.Column="5">
+            <Label Text="{Binding Day_4_5}"/>
+        </Grid>
+        <Grid Grid.Row="5" Grid.Column="5">
+            <Label Text="{Binding Day_5_5}"/>
+        </Grid>
+        <Grid Grid.Row="6" Grid.Column="5">
+            <Label Text="{Binding Day_6_5}"/>
+        </Grid>-->
+    </Grid>
+</Grid>
