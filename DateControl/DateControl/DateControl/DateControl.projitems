@@ -24,7 +24,6 @@
       <DependentUpon>GridView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Calendar\Mounth.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Calendar\Mounths.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

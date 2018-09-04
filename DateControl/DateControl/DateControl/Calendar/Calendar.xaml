@@ -1,15 +1,21 @@
 ﻿<Grid xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DateControl.Calendar.Calendar"
-      xmlns:local="clr-namespace:DateControl.Calendar">
+      xmlns:local="clr-namespace:DateControl.Calendar"
+      x:Name="This"
+      RowSpacing="0">
+    <Grid.BindingContext>
+        <x:Reference Name="This" />
+    </Grid.BindingContext>
+
     <Grid.RowDefinitions>
         <RowDefinition Height="5*" />
         <RowDefinition Height="24*" />
     </Grid.RowDefinitions>
 
-    <Grid Grid.Row="0">
+    <Grid Grid.Row="0" RowSpacing="0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="4*" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -20,12 +26,32 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Image Grid.Column="0" Source=""></Image>
-            <Label Grid.Column="1" Text="{Binding Mounth.Name}" />
-            <Image Grid.Column="2" Source=""></Image>
+            <Grid Grid.Column="0" Margin="15">
+                <Image Source="https://www.shareicon.net/download/2016/06/04/775590_arrows_512x512.png">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Up}" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </Grid>
+            <Label Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding Mounth}" />
+                        <Span Text=" " />
+                        <Span Text="{Binding Year}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Grid Grid.Column="2" Margin="15">
+                <Image Source="https://png.icons8.com/ios/1600/double-down-filled.png">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Down}" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </Grid>
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" ColumnSpacing="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -36,161 +62,36 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0" Text="Пн" />
-            <Label Grid.Column="1" Text="Вт" />
-            <Label Grid.Column="2" Text="Ср" />
-            <Label Grid.Column="3" Text="Чт" />
-            <Label Grid.Column="4" Text="Пт" />
-            <Label Grid.Column="5" Text="Сб" />
-            <Label Grid.Column="6" Text="Вс" />
+            <BoxView BackgroundColor="Black" Grid.Column="0"/>
+            <StackLayout BackgroundColor="White" Margin="0, 1, 0, 0" Grid.Column="0">
+                <Label Grid.Column="0" Text="Пн" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="FillAndExpand"/>
+            </StackLayout>
+            <BoxView BackgroundColor="Black" Grid.Column="1"/>
+            <StackLayout BackgroundColor="White" Margin="0, 1, 0, 0" Grid.Column="1">
+                <Label Grid.Column="1" Text="Вт" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="FillAndExpand"/>
+            </StackLayout>
+            <BoxView BackgroundColor="Black" Grid.Column="2"/>
+            <StackLayout BackgroundColor="White" Margin="0, 1, 0, 0" Grid.Column="2">
+                <Label Grid.Column="2" Text="Ср" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="FillAndExpand"/>
+            </StackLayout>
+            <BoxView BackgroundColor="Black" Grid.Column="3"/>
+            <StackLayout BackgroundColor="White" Margin="0, 1, 0, 0" Grid.Column="3">
+                <Label Grid.Column="3" Text="Чт" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="FillAndExpand"/>
+            </StackLayout>
+            <BoxView BackgroundColor="Black" Grid.Column="4"/>
+            <StackLayout BackgroundColor="White" Margin="0, 1, 0, 0" Grid.Column="4">
+                <Label Grid.Column="4" Text="Пт" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="FillAndExpand"/>
+            </StackLayout>
+            <BoxView BackgroundColor="Black" Grid.Column="5"/>
+            <StackLayout BackgroundColor="White" Margin="0, 1, 0, 0" Grid.Column="5">
+                <Label Grid.Column="5" Text="Сб" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="FillAndExpand"/>
+            </StackLayout>
+            <BoxView BackgroundColor="Black" Grid.Column="6"/>
+            <StackLayout BackgroundColor="White" Margin="0, 1, 0, 0" Grid.Column="6">
+                <Label Grid.Column="6" Text="Вс" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="FillAndExpand"/>
+            </StackLayout>
         </Grid>
     </Grid>
 
-    <Grid Grid.Row="1" BindingContext="Mounth">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <local:GridView ItemsSource="{Binding Mounth.Days}"></local:GridView>
-        <!--<Grid Grid.Row="0" Grid.Column="0">
-            <Label Text="{Binding Day_0_0}"/>
-        </Grid>
-        <Grid Grid.Row="1" Grid.Column="0">
-            <Label Text="{Binding Day_1_0}"/>
-        </Grid>
-        <Grid Grid.Row="2" Grid.Column="0">
-            <Label Text="{Binding Day_2_0}"/>
-        </Grid>
-        <Grid Grid.Row="3" Grid.Column="0">
-            <Label Text="{Binding Day_3_0}"/>
-        </Grid>
-        <Grid Grid.Row="4" Grid.Column="0">
-            <Label Text="{Binding Day_4_0}"/>
-        </Grid>
-        <Grid Grid.Row="5" Grid.Column="0">
-            <Label Text="{Binding Day_5_0}"/>
-        </Grid>
-        <Grid Grid.Row="6" Grid.Column="0">
-            <Label Text="{Binding Day_6_0}"/>
-        </Grid>
-        <Grid Grid.Row="0" Grid.Column="1">
-            <Label Text="{Binding Day_0_1}"/>
-        </Grid>
-        <Grid Grid.Row="1" Grid.Column="1">
-            <Label Text="{Binding Day_1_1}"/>
-        </Grid>
-        <Grid Grid.Row="2" Grid.Column="1">
-            <Label Text="{Binding Day_2_1}"/>
-        </Grid>
-        <Grid Grid.Row="3" Grid.Column="1">
-            <Label Text="{Binding Day_3_1}"/>
-        </Grid>
-        <Grid Grid.Row="4" Grid.Column="1">
-            <Label Text="{Binding Day_4_1}"/>
-        </Grid>
-        <Grid Grid.Row="5" Grid.Column="1">
-            <Label Text="{Binding Day_5_1}"/>
-        </Grid>
-        <Grid Grid.Row="6" Grid.Column="1">
-            <Label Text="{Binding Day_6_1}"/>
-        </Grid>
-        <Grid Grid.Row="0" Grid.Column="2">
-            <Label Text="{Binding Day_0_2}"/>
-        </Grid>
-        <Grid Grid.Row="1" Grid.Column="2">
-            <Label Text="{Binding Day_1_2}"/>
-        </Grid>
-        <Grid Grid.Row="2" Grid.Column="2">
-            <Label Text="{Binding Day_2_2}"/>
-        </Grid>
-        <Grid Grid.Row="3" Grid.Column="2">
-            <Label Text="{Binding Day_3_2}"/>
-        </Grid>
-        <Grid Grid.Row="4" Grid.Column="2">
-            <Label Text="{Binding Day_4_2}"/>
-        </Grid>
-        <Grid Grid.Row="5" Grid.Column="2">
-            <Label Text="{Binding Day_5_2}"/>
-        </Grid>
-        <Grid Grid.Row="6" Grid.Column="2">
-            <Label Text="{Binding Day_6_2}"/>
-        </Grid>
-        <Grid Grid.Row="0" Grid.Column="3">
-            <Label Text="{Binding Day_0_3}"/>
-        </Grid>
-        <Grid Grid.Row="1" Grid.Column="3">
-            <Label Text="{Binding Day_1_3}"/>
-        </Grid>
-        <Grid Grid.Row="2" Grid.Column="3">
-            <Label Text="{Binding Day_2_3}"/>
-        </Grid>
-        <Grid Grid.Row="3" Grid.Column="3">
-            <Label Text="{Binding Day_3_3}"/>
-        </Grid>
-        <Grid Grid.Row="4" Grid.Column="3">
-            <Label Text="{Binding Day_4_3}"/>
-        </Grid>
-        <Grid Grid.Row="5" Grid.Column="3">
-            <Label Text="{Binding Day_5_3}"/>
-        </Grid>
-        <Grid Grid.Row="6" Grid.Column="3">
-            <Label Text="{Binding Day_6_3}"/>
-        </Grid>
-        <Grid Grid.Row="0" Grid.Column="4">
-            <Label Text="{Binding Day_0_4}"/>
-        </Grid>
-        <Grid Grid.Row="1" Grid.Column="4">
-            <Label Text="{Binding Day_1_4}"/>
-        </Grid>
-        <Grid Grid.Row="2" Grid.Column="4">
-            <Label Text="{Binding Day_2_4}"/>
-        </Grid>
-        <Grid Grid.Row="3" Grid.Column="4">
-            <Label Text="{Binding Day_3_4}"/>
-        </Grid>
-        <Grid Grid.Row="4" Grid.Column="4">
-            <Label Text="{Binding Day_4_4}"/>
-        </Grid>
-        <Grid Grid.Row="5" Grid.Column="4">
-            <Label Text="{Binding Day_5_4}"/>
-        </Grid>
-        <Grid Grid.Row="6" Grid.Column="4">
-            <Label Text="{Binding Day_6_4}"/>
-        </Grid>
-        <Grid Grid.Row="0" Grid.Column="5">
-            <Label Text="{Binding Day_0_5}"/>
-        </Grid>
-        <Grid Grid.Row="1" Grid.Column="5">
-            <Label Text="{Binding Day_1_5}"/>
-        </Grid>
-        <Grid Grid.Row="2" Grid.Column="5">
-            <Label Text="{Binding Day_2_5}"/>
-        </Grid>
-        <Grid Grid.Row="3" Grid.Column="5">
-            <Label Text="{Binding Day_3_5}"/>
-        </Grid>
-        <Grid Grid.Row="4" Grid.Column="5">
-            <Label Text="{Binding Day_4_5}"/>
-        </Grid>
-        <Grid Grid.Row="5" Grid.Column="5">
-            <Label Text="{Binding Day_5_5}"/>
-        </Grid>
-        <Grid Grid.Row="6" Grid.Column="5">
-            <Label Text="{Binding Day_6_5}"/>
-        </Grid>-->
-    </Grid>
+    <local:GridView Grid.Row="1" ItemsSource="{Binding Days}" ColumnCount="7" RowCount="6"/>
 </Grid>
