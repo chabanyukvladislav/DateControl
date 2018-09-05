@@ -26,14 +26,14 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0" Margin="15">
+            <Grid Grid.Column="0" Margin="10">
                 <Image Source="https://www.shareicon.net/download/2016/06/04/775590_arrows_512x512.png">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding Up}" />
                     </Image.GestureRecognizers>
                 </Image>
             </Grid>
-            <Label Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center">
+            <Label Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" x:Name="header">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{Binding Mounth}" />
@@ -42,7 +42,7 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Grid Grid.Column="2" Margin="15">
+            <Grid Grid.Column="2" Margin="10">
                 <Image Source="https://png.icons8.com/ios/1600/double-down-filled.png">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding Down}" />
@@ -93,5 +93,5 @@
         </Grid>
     </Grid>
 
-    <local:GridView Grid.Row="1" ItemsSource="{Binding Days}" ColumnCount="7" RowCount="6"/>
+    <local:GridView Grid.Row="1" ItemsSource="{Binding Days}" ColumnCount="7" RowCount="6" x:Name="myGridView"/>
 </Grid>

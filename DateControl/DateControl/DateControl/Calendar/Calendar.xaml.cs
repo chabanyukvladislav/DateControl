@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Amporis.Xamarin.Forms.ColorPicker;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Xamarin.Forms;
 
 namespace DateControl.Calendar
 {
     public partial class Calendar
     {
+        private readonly IEventsCollection _eventsCollection;
+
         public static readonly BindableProperty MounthProperty;
         public static readonly BindableProperty YearProperty;
 
@@ -25,7 +29,8 @@ namespace DateControl.Calendar
             set => SetValue(YearProperty, value);
         }
 
-        public ObservableCollection<int> Days { get; private set; }
+        public ObservableCollection<Event> Days { get; private set; }
+        public Event SelectedEvent { get; private set; }
 
         static Calendar()
         {
@@ -35,10 +40,18 @@ namespace DateControl.Calendar
 
         public Calendar()
         {
-            Days = new ObservableCollection<int>(GetDays());
+            _eventsCollection = EventsCollection.GetEventsCollection;
+            _eventsCollection.CollectionChanged += CollectionChanged;
+            Days = new ObservableCollection<Event>(GetDays());
             Up = new Command(ExecuteUp);
             Down = new Command(ExecuteDown);
             InitializeComponent();
+            myGridView.SelectedChanged += OnSelectedChanged;
+        }
+
+        private void CollectionChanged()
+        {
+            OnPropertyChanged("Collection");
         }
 
         private void ExecuteDown(object obj)
@@ -63,10 +76,10 @@ namespace DateControl.Calendar
                 Mounth -= 1;
         }
 
-        private List<int> GetDays()
+        private List<Event> GetDays()
         {
             int date = GetStartDay();
-            List<int> list = new List<int>();
+            List<Event> list = new List<Event>();
             int[] arr = new[] { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
             int k = (int)Mounth % 11;
             int count = arr[k];
@@ -76,20 +89,35 @@ namespace DateControl.Calendar
             int last = date - 2;
             if (last < 0)
                 last += 7;
-            int lastCount = arr[((int)Mounth - 1) % 11];
+            int m;
+            if (Mounth == Mounths.January)
+                m = 11;
+            else
+                m = (int)Mounth - 1;
+            int lastCount = arr[m % 11];
             for (int i = lastCount - last + 1; i <= lastCount; i++)
             {
-                list.Add(i);
+                Event element = _eventsCollection.GetEvent(i, (Mounths)m, m == 11 ? Year - 1 : Year);
+                if (element == null)
+                    element = new Event() { Day = i, Heh = Color.White.ToHex(), Mounth = (Mounths)m, Year = m == 11 ? Year - 1 : Year, Description = ""};
+                list.Add(element);
             }
 
             for (int i = 1; i <= count; ++i)
             {
-                list.Add(i);
+                Event element = _eventsCollection.GetEvent(i, Mounth, Year);
+                if (element == null)
+                    element = new Event() { Day = i, Heh = Color.White.ToHex(), Mounth = Mounth, Year = Year, Description = "" };
+                list.Add(element);
             }
 
             for (int i = 1; list.Count != 42; i++)
             {
-                list.Add(i);
+                Mounths mounth = ((int) Mounth) + 1 == 12 ? Mounths.January : Mounth + 1;
+                Event element = _eventsCollection.GetEvent(i, mounth, mounth == Mounths.January ? Year + 1 : Year);
+                if (element == null)
+                    element = new Event() { Day = i, Heh = Color.White.ToHex(), Mounth = mounth, Year = mounth == Mounths.January ? Year + 1 : Year, Description = "" };
+                list.Add(element);
             }
             return list;
         }
@@ -169,11 +197,20 @@ namespace DateControl.Calendar
         {
             base.OnPropertyChanged(propertyName);
 
-            if (propertyName == MounthProperty.PropertyName || propertyName == YearProperty.PropertyName)
+            if (propertyName == MounthProperty.PropertyName || propertyName == YearProperty.PropertyName || propertyName == "Collection")
             {
-                Days = new ObservableCollection<int>(GetDays());
-                
+                header.Text = Mounth + " " + Year;
+                Days = new ObservableCollection<Event>(GetDays());
+                myGridView.ItemsSource = Days;
             }
         }
+
+        private void OnSelectedChanged(Event item)
+        {
+            SelectedEvent = item;
+            SelectedChanged?.Invoke(item);
+        }
+
+        public event Action<Event> SelectedChanged;
     }
 }

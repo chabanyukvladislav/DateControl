@@ -13,6 +13,11 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)MainPage.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AddEventPage.xaml.cs">
+      <DependentUpon>AddEventPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)AddEventViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -24,10 +29,21 @@
       <DependentUpon>GridView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Calendar\GridViewCell.xaml.cs">
+      <DependentUpon>GridViewCell.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Calendar\Mounths.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Context.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DatabaseConnector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Calendar\Event.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EventsCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IDatabaseConnector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IEventsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)MainPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Calendar\Calendar.xaml">
@@ -37,6 +53,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Calendar\GridView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Calendar\GridViewCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)AddEventPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>

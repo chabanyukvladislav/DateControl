@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace DateControl.Calendar
@@ -9,6 +11,8 @@ namespace DateControl.Calendar
         public static readonly BindableProperty ItemsSourceProperty;
         public static readonly BindableProperty ColumnCountProperty;
         public static readonly BindableProperty RowCountProperty;
+
+        public ICommand Select { get; set; }
 
         public IEnumerable ItemsSource
         {
@@ -35,8 +39,28 @@ namespace DateControl.Calendar
 
         public GridView()
         {
+            Select = new Command(ExecuteSelect);
             InitializeComponent();
             InitializeView();
+        }
+
+        private void ExecuteSelect(object obj)
+        {
+            foreach (GridViewCell child in gridView.Children)
+            {
+                child.BorderBackground = Color.Black;
+                child.LeftMargin = 0;
+                child.TopMargin = 1;
+                child.RightMargin = 1;
+                child.BottomMargin = 0;
+            }
+            GridViewCell cell = obj as GridViewCell;
+            cell.BorderBackground = Color.Red;
+            cell.LeftMargin = 2;
+            cell.TopMargin = 2;
+            cell.RightMargin = 2;
+            cell.BottomMargin = 2;
+            SelectedChanged?.Invoke(cell.Event);
         }
 
         private void InitializeView()
@@ -49,26 +73,20 @@ namespace DateControl.Calendar
         {
             int row = 0;
             int column = 0;
-            foreach (object item in ItemsSource)
+            foreach (Event item in ItemsSource)
             {
-                BoxView box = new BoxView
+                GridViewCell cell;
+                if (column == ColumnCount - 1)
+                    cell = new GridViewCell(item, 0, 1, 0, 0);
+                else
+                    cell = new GridViewCell(item);
+                TapGestureRecognizer gestureRecognizer = new TapGestureRecognizer
                 {
-                    BackgroundColor = Color.Black
+                    Command = Select
                 };
-                StackLayout stack = new StackLayout()
-                {
-                    Margin = new Thickness(0, 1, 1, 0),
-                    BackgroundColor = Color.White
-                };
-                Label view = new Label
-                {
-                    Text = item.ToString(),
-                    Margin = new Thickness(8, 8, 0, 0),
-                    BackgroundColor = Color.White
-                };
-                stack.Children.Add(view);
-                gridView.Children.Add(box, column, row);
-                gridView.Children.Add(stack, column, row);
+                cell.GestureRecognizers.Add(gestureRecognizer);
+                gestureRecognizer.CommandParameter = cell;
+                gridView.Children.Add(cell, column, row);
                 column++;
                 if (column == ColumnCount)
                 {
@@ -123,5 +141,7 @@ namespace DateControl.Calendar
             if (propertyName == RowCountProperty.PropertyName || propertyName == ColumnCountProperty.PropertyName || propertyName == ItemsSourceProperty.PropertyName)
                 InitializeView();
         }
+
+        public event Action<Event> SelectedChanged;
     }
 }

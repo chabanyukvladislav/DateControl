@@ -1,5 +1,4 @@
-﻿using DateControl.Calendar;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace DateControl
 {
@@ -8,6 +7,9 @@ namespace DateControl
         public MainPage()
         {
             InitializeComponent();
+            MainPageViewModel viewModel = new MainPageViewModel();
+            calendar.SelectedChanged += viewModel.SelectedChanged;
+            BindingContext = viewModel;
         }
     }
 }
