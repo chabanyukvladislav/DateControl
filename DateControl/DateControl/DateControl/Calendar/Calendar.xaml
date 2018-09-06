@@ -93,5 +93,5 @@
         </Grid>
     </Grid>
 
-    <local:GridView Grid.Row="1" ItemsSource="{Binding Days}" ColumnCount="7" RowCount="6" x:Name="myGridView"/>
+    <local:GridView Grid.Row="1" ItemsSource="{Binding Days}" ColumnCount="7" RowCount="6" x:Name="myGridView" />
 </Grid>

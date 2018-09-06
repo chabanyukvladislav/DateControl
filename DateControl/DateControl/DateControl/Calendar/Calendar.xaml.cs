@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Amporis.Xamarin.Forms.ColorPicker;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Xamarin.Forms;
 
 namespace DateControl.Calendar
@@ -58,8 +57,8 @@ namespace DateControl.Calendar
         {
             if (Mounth == Mounths.December)
             {
-                Mounth = Mounths.January;
                 Year += 1;
+                Mounth = Mounths.January;
             }
             else
                 Mounth += 1;
@@ -69,8 +68,8 @@ namespace DateControl.Calendar
         {
             if (Mounth == Mounths.January)
             {
-                Mounth = Mounths.December;
                 Year -= 1;
+                Mounth = Mounths.December;
             }
             else
                 Mounth -= 1;
@@ -99,7 +98,7 @@ namespace DateControl.Calendar
             {
                 Event element = _eventsCollection.GetEvent(i, (Mounths)m, m == 11 ? Year - 1 : Year);
                 if (element == null)
-                    element = new Event() { Day = i, Heh = Color.White.ToHex(), Mounth = (Mounths)m, Year = m == 11 ? Year - 1 : Year, Description = ""};
+                    element = new Event() { Day = i, Heh = Color.LightGray.ToHex(), Mounth = (Mounths)m, Year = m == 11 ? Year - 1 : Year, Description = "" };
                 list.Add(element);
             }
 
@@ -113,10 +112,10 @@ namespace DateControl.Calendar
 
             for (int i = 1; list.Count != 42; i++)
             {
-                Mounths mounth = ((int) Mounth) + 1 == 12 ? Mounths.January : Mounth + 1;
+                Mounths mounth = ((int)Mounth) + 1 == 12 ? Mounths.January : Mounth + 1;
                 Event element = _eventsCollection.GetEvent(i, mounth, mounth == Mounths.January ? Year + 1 : Year);
                 if (element == null)
-                    element = new Event() { Day = i, Heh = Color.White.ToHex(), Mounth = mounth, Year = mounth == Mounths.January ? Year + 1 : Year, Description = "" };
+                    element = new Event() { Day = i, Heh = Color.LightGray.ToHex(), Mounth = mounth, Year = mounth == Mounths.January ? Year + 1 : Year, Description = "" };
                 list.Add(element);
             }
             return list;
@@ -197,7 +196,7 @@ namespace DateControl.Calendar
         {
             base.OnPropertyChanged(propertyName);
 
-            if (propertyName == MounthProperty.PropertyName || propertyName == YearProperty.PropertyName || propertyName == "Collection")
+            if (propertyName == MounthProperty.PropertyName || propertyName == "Collection")
             {
                 header.Text = Mounth + " " + Year;
                 Days = new ObservableCollection<Event>(GetDays());

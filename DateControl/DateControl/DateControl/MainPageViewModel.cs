@@ -1,10 +1,17 @@
-﻿using Amporis.Xamarin.Forms.ColorPicker;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
+using DateControl.Calendar;
 
 namespace DateControl
 {
     class MainPageViewModel
     {
+        private readonly IEventsCollection _eventsCollection;
+
+        public MainPageViewModel()
+        {
+            _eventsCollection = EventsCollection.GetEventsCollection;
+        }
+
         public async void SelectedChanged(Event item)
         {
             if (item.Description == "")
@@ -17,8 +24,7 @@ namespace DateControl
                 if (await Application.Current.MainPage.DisplayAlert("Message", "What would you want to do?", "Edit",
                         "Delete") == false)
                 {
-                    item.Description = "";
-                    item.Heh = Color.White.ToHex();
+                    _eventsCollection.DeleteEvent(item);
                     return;
                 }
                 await Application.Current.MainPage.Navigation.PushAsync(new AddEventPage(item));

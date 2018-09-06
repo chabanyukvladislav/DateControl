@@ -1,20 +1,31 @@
 ﻿using System;
-using System.Globalization;
+using System.ComponentModel;
 using System.Windows.Input;
 using Amporis.Xamarin.Forms.ColorPicker;
 using Xamarin.Forms;
+using DateControl.Calendar;
 
 namespace DateControl
 {
-    class AddEventViewModel
+    class AddEventViewModel: INotifyPropertyChanged
     {
         private readonly Event _item;
         private readonly IEventsCollection _eventsCollection;
+        private Color _color;
 
         public ICommand Ok { get; }
 
         public string Description { get; set; }
-        public Color Color { get; set; }
+
+        public Color Color
+        {
+            get => _color;
+            set
+            {
+                _color = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Color)));
+            }
+        }
 
         public AddEventViewModel(Event item)
         {
@@ -35,5 +46,7 @@ namespace DateControl
                 _eventsCollection.EditEvent(_item);
             await Application.Current.MainPage.Navigation.PopAsync();
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

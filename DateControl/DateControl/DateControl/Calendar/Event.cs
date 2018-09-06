@@ -1,7 +1,6 @@
-﻿using DateControl.Calendar;
-using System;
+﻿using System;
 
-namespace DateControl
+namespace DateControl.Calendar
 {
     public class Event
     {
