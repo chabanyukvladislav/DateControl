@@ -1,8 +1,6 @@
-﻿using Xamarin.Forms;
-
-namespace DateControl
+﻿namespace DateControl
 {
-    public partial class MainPage : ContentPage
+    public partial class MainPage
     {
         public MainPage()
         {

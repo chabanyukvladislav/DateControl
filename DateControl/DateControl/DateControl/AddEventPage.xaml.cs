@@ -8,7 +8,8 @@ namespace DateControl
         public AddEventPage(Event item)
         {
             InitializeComponent();
-            BindingContext = new AddEventViewModel(item);
+            AddEventViewModel vm = new AddEventViewModel(item);
+            BindingContext = vm;
         }
     }
 }

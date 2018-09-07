@@ -14,7 +14,6 @@ namespace DateControl
         private Color _color;
 
         public ICommand Ok { get; }
-
         public string Description { get; set; }
 
         public Color Color

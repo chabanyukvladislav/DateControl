@@ -29,7 +29,11 @@ namespace DateControl.Calendar
         }
 
         public ObservableCollection<Event> Days { get; private set; }
+        public ObservableCollection<Event> NextDays { get; private set; }
+        public ObservableCollection<Event> PreviosDays { get; private set; }
         public Event SelectedEvent { get; private set; }
+        private GridView CurrentGridView { get; set; }
+        private GridView BackGridView { get; set; }
 
         static Calendar()
         {
@@ -41,11 +45,16 @@ namespace DateControl.Calendar
         {
             _eventsCollection = EventsCollection.GetEventsCollection;
             _eventsCollection.CollectionChanged += CollectionChanged;
-            Days = new ObservableCollection<Event>(GetDays());
+            Days = new ObservableCollection<Event>(GetDays(Mounth, Year));
+            NextDays = new ObservableCollection<Event>(GetDays(Mounth == Mounths.December ? Mounths.January : Mounth + 1, Mounth == Mounths.December ? Year + 1 : Year));
+            PreviosDays = new ObservableCollection<Event>(GetDays(Mounth == Mounths.January ? Mounths.December : Mounth - 1, Mounth == Mounths.January ? Year - 1 : Year));
             Up = new Command(ExecuteUp);
             Down = new Command(ExecuteDown);
             InitializeComponent();
             myGridView.SelectedChanged += OnSelectedChanged;
+            This.LowerChild(myBackGridView);
+            CurrentGridView = myGridView;
+            BackGridView = myBackGridView;
         }
 
         private void CollectionChanged()
@@ -75,61 +84,61 @@ namespace DateControl.Calendar
                 Mounth -= 1;
         }
 
-        private List<Event> GetDays()
+        private List<Event> GetDays(Mounths mounth, int year)
         {
-            int date = GetStartDay();
+            int date = GetStartDay(mounth, year);
             List<Event> list = new List<Event>();
             int[] arr = new[] { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-            int k = (int)Mounth % 11;
+            int k = (int)mounth % 11;
             int count = arr[k];
-            if (count == 28 && Year % 4 == 0 &&
-                (Year % 100 != 0 || Year % 400 == 0))
+            if (count == 28 && year % 4 == 0 &&
+                (year % 100 != 0 || year % 400 == 0))
                 count = 29;
             int last = date - 2;
             if (last < 0)
                 last += 7;
             int m;
-            if (Mounth == Mounths.January)
+            if (mounth == Mounths.January)
                 m = 11;
             else
-                m = (int)Mounth - 1;
+                m = (int)mounth - 1;
             int lastCount = arr[m % 11];
             for (int i = lastCount - last + 1; i <= lastCount; i++)
             {
-                Event element = _eventsCollection.GetEvent(i, (Mounths)m, m == 11 ? Year - 1 : Year);
+                Event element = _eventsCollection.GetEvent(i, (Mounths)m, m == 11 ? year - 1 : year);
                 if (element == null)
-                    element = new Event() { Day = i, Heh = Color.LightGray.ToHex(), Mounth = (Mounths)m, Year = m == 11 ? Year - 1 : Year, Description = "" };
+                    element = new Event() { Day = i, Heh = Color.LightGray.ToHex(), Mounth = (Mounths)m, Year = m == 11 ? year - 1 : year, Description = "" };
                 list.Add(element);
             }
 
             for (int i = 1; i <= count; ++i)
             {
-                Event element = _eventsCollection.GetEvent(i, Mounth, Year);
+                Event element = _eventsCollection.GetEvent(i, mounth, year);
                 if (element == null)
-                    element = new Event() { Day = i, Heh = Color.White.ToHex(), Mounth = Mounth, Year = Year, Description = "" };
+                    element = new Event() { Day = i, Heh = Color.White.ToHex(), Mounth = mounth, Year = year, Description = "" };
                 list.Add(element);
             }
 
             for (int i = 1; list.Count != 42; i++)
             {
-                Mounths mounth = ((int)Mounth) + 1 == 12 ? Mounths.January : Mounth + 1;
-                Event element = _eventsCollection.GetEvent(i, mounth, mounth == Mounths.January ? Year + 1 : Year);
+                Mounths nextMounth = ((int)mounth) + 1 == 12 ? Mounths.January : mounth + 1;
+                Event element = _eventsCollection.GetEvent(i, nextMounth, nextMounth == Mounths.January ? year + 1 : year);
                 if (element == null)
-                    element = new Event() { Day = i, Heh = Color.LightGray.ToHex(), Mounth = mounth, Year = mounth == Mounths.January ? Year + 1 : Year, Description = "" };
+                    element = new Event() { Day = i, Heh = Color.LightGray.ToHex(), Mounth = nextMounth, Year = nextMounth == Mounths.January ? year + 1 : year, Description = "" };
                 list.Add(element);
             }
             return list;
         }
 
-        private int GetStartDay()
+        private int GetStartDay(Mounths mounth, int year)
         {
-            int mounthCode = GetMounthCode();
-            int centuryCode = GetCenturyCode();
-            int yearCode = (centuryCode + Convert.ToInt32(Year.ToString().Remove(0, Year.ToString().Length - 2)) +
-                            (Convert.ToInt32(Year.ToString().Remove(0, Year.ToString().Length - 2)) / 4)) % 7;
+            int mounthCode = GetMounthCode(mounth);
+            int centuryCode = GetCenturyCode(year);
+            int yearCode = (centuryCode + Convert.ToInt32(year.ToString().Remove(0, year.ToString().Length - 2)) +
+                            (Convert.ToInt32(year.ToString().Remove(0, year.ToString().Length - 2)) / 4)) % 7;
             int date = (yearCode + mounthCode + 1) % 7;
-            if (Year % 4 == 0 &&
-                (Year % 100 != 0 || Year % 400 == 0))
+            if (year % 4 == 0 &&
+                (year % 100 != 0 || year % 400 == 0))
             {
                 date -= 1;
                 if (date == -1)
@@ -139,17 +148,17 @@ namespace DateControl.Calendar
             return date;
         }
 
-        private int GetCenturyCode()
+        private int GetCenturyCode(int year)
         {
             int[] k = new[] { 6, 4, 2, 0 };
-            int year = Convert.ToInt32(Year.ToString().Remove(Year.ToString().Length - 2));
-            return k[(year - 16) % 4];
+            int y = Convert.ToInt32(year.ToString().Remove(year.ToString().Length - 2));
+            return k[(y - 16) % 4];
         }
 
-        private int GetMounthCode()
+        private int GetMounthCode(Mounths mounth)
         {
             int code = -1;
-            switch (Mounth)
+            switch (mounth)
             {
                 case Mounths.January:
                     code = 1;
@@ -192,6 +201,77 @@ namespace DateControl.Calendar
             return code;
         }
 
+        private void PanGestureRecognizer_OnPanUpdated(object sender, PanUpdatedEventArgs e)
+        {
+            if (e.StatusType == GestureStatus.Running)
+            {
+                if (e.TotalX > 0)
+                {
+                    BackGridView.ItemsSource = PreviosDays;
+                }
+                else
+                {
+                    BackGridView.ItemsSource = NextDays;
+                }
+                CurrentGridView.TranslateTo(e.TotalX, 0);
+            }
+            else
+            {
+                if (CurrentGridView.TranslationX < 200 && CurrentGridView.TranslationX > -200)
+                {
+                    CurrentGridView.TranslateTo(0, 0);
+                }
+                else
+                {
+                    int to;
+                    if (CurrentGridView.TranslationX < 0)
+                    {
+                        to = -2000;
+                    }
+                    else
+                    {
+                        to = 2000;
+                    }
+                    Animation animation = new Animation(el => CurrentGridView.TranslationX = el, CurrentGridView.TranslationX, to);
+                    animation.Commit(this, "Animation", 16U, 250U, null, Finished);
+                }
+            }
+        }
+
+        private void Finished(double arg1, bool arg2)
+        {
+            if (BackGridView.ItemsSource == NextDays)
+            {
+                PreviosDays = Days;
+                Days = NextDays;
+                Year = Mounth == Mounths.December ? Year + 1 : Year;
+                Mounth = Mounth == Mounths.December ? Mounths.January : Mounth + 1;
+                BackGridView.GestureRecognizers.Add(CurrentGridView.GestureRecognizers[0]);
+                NextDays = new ObservableCollection<Event>(GetDays(Mounth == Mounths.December ? Mounths.January : Mounth + 1, Mounth == Mounths.December ? Year + 1 : Year));
+                This.LowerChild(CurrentGridView);
+                CurrentGridView.TranslateTo(0, 0);
+                CurrentGridView.GestureRecognizers.Clear();
+                GridView temp = CurrentGridView;
+                CurrentGridView = BackGridView;
+                BackGridView = temp;
+            }
+            else
+            {
+                NextDays = Days;
+                Days = PreviosDays;
+                Year = Mounth == Mounths.January ? Year - 1 : Year;
+                Mounth = Mounth == Mounths.January ? Mounths.December : Mounth - 1;
+                BackGridView.GestureRecognizers.Add(CurrentGridView.GestureRecognizers[0]);
+                PreviosDays = new ObservableCollection<Event>(GetDays(Mounth == Mounths.January ? Mounths.December : Mounth - 1, Mounth == Mounths.January ? Year - 1 : Year));
+                This.LowerChild(CurrentGridView);
+                CurrentGridView.TranslateTo(0, 0);
+                CurrentGridView.GestureRecognizers.Clear();
+                GridView temp = CurrentGridView;
+                CurrentGridView = BackGridView;
+                BackGridView = temp;
+            }
+        }
+
         protected override void OnPropertyChanged(string propertyName = null)
         {
             base.OnPropertyChanged(propertyName);
@@ -199,7 +279,6 @@ namespace DateControl.Calendar
             if (propertyName == MounthProperty.PropertyName || propertyName == "Collection")
             {
                 header.Text = Mounth + " " + Year;
-                Days = new ObservableCollection<Event>(GetDays());
                 myGridView.ItemsSource = Days;
             }
         }

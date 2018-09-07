@@ -13,7 +13,7 @@
         <RowDefinition Height="24*" />
     </Grid.RowDefinitions>
 
-    <Grid Grid.Row="0" RowSpacing="0">
+    <Grid Grid.Row="0" RowSpacing="0" BackgroundColor="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -93,5 +93,10 @@
         </Grid>
     </Grid>
 
-    <local:GridView Grid.Row="1" ItemsSource="{Binding Days}" ColumnCount="7" RowCount="6" x:Name="myGridView" />
+    <local:GridView Grid.Row="1" ItemsSource="{Binding Days}" ColumnCount="7" RowCount="6" x:Name="myGridView">
+        <Grid.GestureRecognizers>
+            <PanGestureRecognizer PanUpdated="PanGestureRecognizer_OnPanUpdated"/>
+        </Grid.GestureRecognizers>
+    </local:GridView>
+    <local:GridView Grid.Row="1" ItemsSource="{Binding Days}" ColumnCount="7" RowCount="6" x:Name="myBackGridView"/>
 </Grid>
