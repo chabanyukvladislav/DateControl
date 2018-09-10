@@ -3,7 +3,8 @@
              x:Class="DateControl.Calendar.Calendar"
       xmlns:local="clr-namespace:DateControl.Calendar"
       x:Name="This"
-      RowSpacing="0">
+      RowSpacing="0"
+      IsClippedToBounds="True">
     <Grid.BindingContext>
         <x:Reference Name="This" />
     </Grid.BindingContext>

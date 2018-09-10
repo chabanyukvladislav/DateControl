@@ -7,7 +7,7 @@ using DateControl.Calendar;
 
 namespace DateControl
 {
-    class Context: DbContext
+    class Context : DbContext
     {
         private const string DatabaseName = "database.db";
 
@@ -38,6 +38,11 @@ namespace DateControl
                     throw new NotImplementedException("Platform not supported");
             }
             optionsBuilder.UseSqlite($"Filename={databasePath}");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Event>().Property(p => p.DateTime).HasColumnType("datetime2");
         }
     }
 }

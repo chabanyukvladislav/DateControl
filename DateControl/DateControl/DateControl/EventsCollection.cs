@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DateControl.Calendar;
+using Plugin.LocalNotifications;
 
 namespace DateControl
 {
@@ -41,6 +42,10 @@ namespace DateControl
         {
             Collection = await _databaseConnector.GetEvents() ?? new List<Event>();
             CollectionChanged?.Invoke();
+            foreach (Event item in Collection.Where(el => el.Mounth == ((Mounths)DateTime.Now.Month - 1)))
+            {
+                CrossLocalNotifications.Current.Show("Notification", item.Description, item.Id, item.DateTime);
+            }
         }
 
         public async void AddEvent(Event item)
@@ -52,6 +57,7 @@ namespace DateControl
                 return;
             Collection.Add(element);
             CollectionChanged?.Invoke();
+            CrossLocalNotifications.Current.Show("Notification", element.Description, element.Id, element.DateTime);
         }
 
         public async void DeleteEvent(Event item)
@@ -60,6 +66,7 @@ namespace DateControl
                 return;
             Collection.Remove(item);
             CollectionChanged?.Invoke();
+            CrossLocalNotifications.Current.Cancel(item.Id);
         }
 
         public async void EditEvent(Event newItem)
@@ -69,6 +76,8 @@ namespace DateControl
             Collection.Remove(Collection.Find(el => el.Id == newItem.Id));
             Collection.Add(newItem);
             CollectionChanged?.Invoke();
+            CrossLocalNotifications.Current.Cancel(newItem.Id);
+            CrossLocalNotifications.Current.Show("Notification", newItem.Description, newItem.Id, newItem.DateTime);
         }
 
         public Event GetEvent(int day, Mounths mounth, int year)

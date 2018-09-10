@@ -7,7 +7,7 @@ using DateControl.Calendar;
 
 namespace DateControl
 {
-    class AddEventViewModel: INotifyPropertyChanged
+    class AddEventViewModel : INotifyPropertyChanged
     {
         private readonly Event _item;
         private readonly IEventsCollection _eventsCollection;
@@ -15,6 +15,7 @@ namespace DateControl
 
         public ICommand Ok { get; }
         public string Description { get; set; }
+        public TimeSpan Time { get; set; }
 
         public Color Color
         {
@@ -33,13 +34,17 @@ namespace DateControl
             Ok = new Command(ExecuteOk);
             Description = item.Description;
             Color = Color.FromHex(item.Heh);
+            TimeSpan time = new TimeSpan(0, _item.DateTime.Hour, _item.DateTime.Minute, _item.DateTime.Second);
+            Time = time;
         }
 
         private async void ExecuteOk()
         {
             _item.Description = Description;
             _item.Heh = Color.ToHex();
-            if (_item.Id == Guid.Empty)
+            DateTime time = new DateTime(_item.Year, (int)_item.Mounth + 1, _item.Day, Time.Hours, Time.Minutes, Time.Seconds);
+            _item.DateTime = time;
+            if (_item.Id == 0)
                 _eventsCollection.AddEvent(_item);
             else
                 _eventsCollection.EditEvent(_item);

@@ -51,10 +51,12 @@ namespace DateControl.Calendar
             Up = new Command(ExecuteUp);
             Down = new Command(ExecuteDown);
             InitializeComponent();
-            myGridView.SelectedChanged += OnSelectedChanged;
-            This.LowerChild(myBackGridView);
             CurrentGridView = myGridView;
             BackGridView = myBackGridView;
+            CurrentGridView.SelectedChanged += OnSelectedChanged;
+            BackGridView.SelectedChanged += OnSelectedChanged;
+            This.LowerChild(CurrentGridView);
+            This.LowerChild(BackGridView);
         }
 
         private void CollectionChanged()
@@ -205,35 +207,32 @@ namespace DateControl.Calendar
         {
             if (e.StatusType == GestureStatus.Running)
             {
-                if (e.TotalX > 0)
+                if (e.TotalY > 0)
                 {
                     BackGridView.ItemsSource = PreviosDays;
+                    BackGridView.TranslateTo(0, e.TotalY - BackGridView.Height);
                 }
                 else
                 {
                     BackGridView.ItemsSource = NextDays;
+                    BackGridView.TranslateTo(0, e.TotalY + BackGridView.Height);
                 }
-                CurrentGridView.TranslateTo(e.TotalX, 0);
+                CurrentGridView.TranslateTo(0, e.TotalY);
             }
             else
             {
-                if (CurrentGridView.TranslationX < 200 && CurrentGridView.TranslationX > -200)
+                if (CurrentGridView.TranslationY < 200 && CurrentGridView.TranslationY > -200)
                 {
                     CurrentGridView.TranslateTo(0, 0);
+                    BackGridView.TranslateTo(0, 0);
                 }
                 else
                 {
-                    int to;
-                    if (CurrentGridView.TranslationX < 0)
-                    {
-                        to = -2000;
-                    }
-                    else
-                    {
-                        to = 2000;
-                    }
-                    Animation animation = new Animation(el => CurrentGridView.TranslationX = el, CurrentGridView.TranslationX, to);
-                    animation.Commit(this, "Animation", 16U, 250U, null, Finished);
+                    Animation animationBack = new Animation(el => BackGridView.TranslationY = el, BackGridView.TranslationY, 0);
+                    animationBack.Commit(this, "AnimationBack", 16U, 2500U, Easing.CubicOut);
+
+                    Animation animation = new Animation(el => CurrentGridView.TranslationY = el, CurrentGridView.TranslationY, CurrentGridView.TranslationY < 0 ? -CurrentGridView.Height : CurrentGridView.Height);
+                    animation.Commit(this, "Animation", 16U, 2500U, Easing.CubicOut, Finished);
                 }
             }
         }
@@ -279,6 +278,7 @@ namespace DateControl.Calendar
             if (propertyName == MounthProperty.PropertyName || propertyName == "Collection")
             {
                 header.Text = Mounth + " " + Year;
+                Days = new ObservableCollection<Event>(GetDays(Mounth, Year));
                 myGridView.ItemsSource = Days;
             }
         }
