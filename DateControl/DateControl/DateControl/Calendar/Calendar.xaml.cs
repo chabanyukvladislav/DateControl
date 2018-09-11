@@ -109,7 +109,7 @@ namespace DateControl.Calendar
             {
                 Event element = _eventsCollection.GetEvent(i, (Mounths)m, m == 11 ? year - 1 : year);
                 if (element == null)
-                    element = new Event() { Day = i, Heh = Color.LightGray.ToHex(), Mounth = (Mounths)m, Year = m == 11 ? year - 1 : year, Description = "" };
+                    element = new Event() { Day = i, Heh = Color.LightGray.ToHex(), Mounth = (Mounths)m, Year = m == 11 ? year - 1 : year, Description = "", Icon = ""};
                 list.Add(element);
             }
 
@@ -117,7 +117,7 @@ namespace DateControl.Calendar
             {
                 Event element = _eventsCollection.GetEvent(i, mounth, year);
                 if (element == null)
-                    element = new Event() { Day = i, Heh = Color.White.ToHex(), Mounth = mounth, Year = year, Description = "" };
+                    element = new Event() { Day = i, Heh = Color.White.ToHex(), Mounth = mounth, Year = year, Description = "", Icon = "" };
                 list.Add(element);
             }
 
@@ -126,7 +126,7 @@ namespace DateControl.Calendar
                 Mounths nextMounth = ((int)mounth) + 1 == 12 ? Mounths.January : mounth + 1;
                 Event element = _eventsCollection.GetEvent(i, nextMounth, nextMounth == Mounths.January ? year + 1 : year);
                 if (element == null)
-                    element = new Event() { Day = i, Heh = Color.LightGray.ToHex(), Mounth = nextMounth, Year = nextMounth == Mounths.January ? year + 1 : year, Description = "" };
+                    element = new Event() { Day = i, Heh = Color.LightGray.ToHex(), Mounth = nextMounth, Year = nextMounth == Mounths.January ? year + 1 : year, Description = "", Icon = "" };
                 list.Add(element);
             }
             return list;

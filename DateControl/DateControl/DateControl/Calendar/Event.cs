@@ -11,5 +11,6 @@ namespace DateControl.Calendar
         public string Description { get; set; }
         public string Heh { get; set; }
         public DateTime DateTime { get; set; }
+        public string Icon { get; set; }
     }
 }

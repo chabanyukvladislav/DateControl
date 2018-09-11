@@ -1,5 +1,6 @@
 ﻿<Grid xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:sk="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
              x:Class="DateControl.Calendar.GridViewCell"
       x:Name="This">
     <Grid.BindingContext>
@@ -7,8 +8,11 @@
     </Grid.BindingContext>
 
     <BoxView BackgroundColor="Black" x:Name="box"/>
-    <StackLayout BackgroundColor="White" Margin="0, 1, 1, 0" x:Name="stack" Orientation="Horizontal">
-        <Label Margin="8, 8, 0, 0" Text="{Binding Event.Day}" x:Name="text"/>
-        <Label Margin="8" Text="{Binding Event.Descriprion}" x:Name="description"/>
+    <StackLayout BackgroundColor="White" Margin="0, 1, 1, 0" x:Name="stack">
+        <StackLayout Orientation="Horizontal">
+            <Label Margin="8, 8, 0, 0" Text="{Binding Event.Day}" x:Name="text"/>
+            <Label Margin="8" Text="{Binding Event.Descriprion}" x:Name="description"/>
+        </StackLayout>
+        <sk:SKCanvasView PaintSurface="SKCanvasView_OnPaintSurface" Margin="8"/>
     </StackLayout>
 </Grid>

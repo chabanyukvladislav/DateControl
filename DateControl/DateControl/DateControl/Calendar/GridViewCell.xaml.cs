@@ -1,4 +1,6 @@
-﻿using Xamarin.Forms;
+﻿using SkiaSharp;
+using SkiaSharp.Views.Forms;
+using Xamarin.Forms;
 
 namespace DateControl.Calendar
 {
@@ -83,6 +85,14 @@ namespace DateControl.Calendar
                 margin.Bottom = BottomMargin;
                 stack.Margin = margin;
             }
+        }
+
+        private void SKCanvasView_OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
+        {
+            SKCanvas canvas = e.Surface.Canvas;
+            canvas.Clear(SKColor.Parse(Event.Heh));
+            SKPath path = SKPath.ParseSvgPathData(Event.Icon);
+            canvas.DrawPath(path, new SKPaint() { Color = SKColors.Black });
         }
     }
 }

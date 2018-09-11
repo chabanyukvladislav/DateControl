@@ -16,6 +16,7 @@ namespace DateControl
         public ICommand Ok { get; }
         public string Description { get; set; }
         public TimeSpan Time { get; set; }
+        public SvgPath Icon { get; set; }
 
         public Color Color
         {
@@ -44,6 +45,8 @@ namespace DateControl
             _item.Heh = Color.ToHex();
             DateTime time = new DateTime(_item.Year, (int)_item.Mounth + 1, _item.Day, Time.Hours, Time.Minutes, Time.Seconds);
             _item.DateTime = time;
+            if (Icon != null)
+                _item.Icon = Icon.Data;
             if (_item.Id == 0)
                 _eventsCollection.AddEvent(_item);
             else

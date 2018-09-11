@@ -1,0 +1,7 @@
+﻿<Grid xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sk="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+             x:Class="DateControl.SvgPath">
+    <BoxView x:Name="box"/>
+    <sk:SKCanvasView Margin="2" PaintSurface="SKCanvasView_OnPaintSurface" x:Name="view"/>
+</Grid>
